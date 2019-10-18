@@ -1,6 +1,3 @@
-# Algebraic-Polynomial-Solver
-# Input any equation where x is unknown and my program will solve for x. Regex function tests for validity of equation. One operation per side.
-
 import re
 
 #################################
@@ -9,10 +6,10 @@ import re
 def is_equation(equ):
     
     # RegEx parts to check if equation exists
-    p_1 = r"(-)?[0-9]*(x)?(\W)?[-\+]?"
-    p_2 = r"(\W)?[0-9]*(x)?(\W)?=(\W)?"
-    p_3 = r"(-)?[0-9]*(x)?(\W)?[-\+]?"
-    p_4 = r"(\W)?[0-9]*(x)?"
+    p_1 = r"[-]?[0-9]*[x]?[\W][-\+]?"
+    p_2 = r"[\W][0-9]*[x]?[\W]=[\W]"
+    p_3 = r"[-]?[0-9]*[x]?(\W)?[-\+]?"
+    p_4 = r"(\W)?[0-9]*[x]?"
     p_final = p_1 + p_2 + p_3 + p_4
 
     # Test if it's an equation
@@ -41,7 +38,7 @@ def x_coeff(equ):
             # Start coefficient and iterate through digits
             coeff = ''
             j = i - 1
-            while equ[j].isdigit() and j != 0:
+            while equ[j].isdigit() and j >= 0:
                 
                 # Create coefficient
                 coeff = equ[j] + coeff
@@ -55,7 +52,8 @@ def x_coeff(equ):
             if equ[j] == '-' or equ[j-1] == '-':
                 coeff = '-' + coeff
                 
-            # Add to total; if after the equal sign, add the negative value 
+            # Add to total; if after the equal sign, add the negative value
+            print(coeff)
             total_coeff += int(coeff) if i > equ.index('=') else -1*int(coeff)
     
     # Return the total coefficient]
@@ -81,7 +79,7 @@ def val_coeff(equ):
             # Start coefficient and iterate through digits
             coeff = ""
             j = i
-            while equ[j].isdigit() and j != 0:
+            while equ[j].isdigit() and j >= 0:
                 
                 # Create coefficient
                 coeff = equ[j] + coeff
