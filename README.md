@@ -24,6 +24,7 @@ import re
 #   numerical coefficients      #
 #   formed into an equation     #
 #################################
+
 def is_equation(equ):
     
     # RegEx parts to check if equation exists
@@ -55,6 +56,7 @@ def is_equation(equ):
 #   numerical coefficients      #
 #   formed into an equation     #
 #################################
+
 def x_coeff(equ):
     
     # Initiate total coefficient
@@ -100,7 +102,8 @@ def x_coeff(equ):
 #   consists of x-value and     #
 #   numerical coefficients      #
 #   formed into an equation     #
-#################################     
+################################# 
+
 def val_coeff(equ):
     
     # Initiate total coefficient
