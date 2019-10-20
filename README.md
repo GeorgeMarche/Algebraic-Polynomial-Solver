@@ -1,19 +1,42 @@
+###########################################
+# Input Algebraic Polynomial              #
+# --------------------------              #
+# This program allows the user to insert  #
+# an equation, which is checked by the    #
+# program to make sure it is valid. If it #
+# is, then the unknown x-value will be    #
+# solved for.                             #
+#                                         #
+# Author: George Marche                   #
+# Date Modified: 10/20/2019               #
+###########################################
+
+# REGEX IMPORT NEEDED
 import re
 
 #################################
 # Test if string is an equation #
+# George Marche                 #
+# Modified: 10/20/2019          #
+# is_equation()                 #
+# equ: string equation that     #
+#   consists of x-value and     #
+#   numerical coefficients      #
+#   formed into an equation     #
 #################################
 def is_equation(equ):
     
     # RegEx parts to check if equation exists
-    p_1 = r"[-]?[0-9]*[x]?[\W][-\+]?"
-    p_2 = r"[\W][0-9]*[x]?[\W]=[\W]"
-    p_3 = r"[-]?[0-9]*[x]?(\W)?[-\+]?"
-    p_4 = r"(\W)?[0-9]*[x]?"
-    p_final = p_1 + p_2 + p_3 + p_4
+    x = r"([0-9]*[x])"
+    num = r"([0-9]+)"
+    x_n = r"(" + x + r"|" + num + r")"
+    oper = r"[\W]?[-\+]?[\W]?"
+    eq = r"[\W]?=[\W]?"
+    val = oper + x_n
+    side = val + val + r"?"
 
     # Test if it's an equation
-    match = re.search(p_final, equ)
+    match = re.match(side + eq + side, equ)
     
     # If it is, return it, else, return None
     if match:
@@ -21,12 +44,20 @@ def is_equation(equ):
     else:
         return None
 
-##############################
-# Get total coefficient of x #
-##############################
+
+#################################
+# Get total coefficient of x    #
+# George Marche                 #
+# Modified: 10/20/2019          #
+# x_coeff()                     #
+# equ: string equation that     #
+#   consists of x-value and     #
+#   numerical coefficients      #
+#   formed into an equation     #
+#################################
 def x_coeff(equ):
     
-    # Total coefficient variable
+    # Initiate total coefficient
     total_coeff = 0
     
     # Iterate through characters
@@ -35,36 +66,44 @@ def x_coeff(equ):
         # If character is x...
         if equ[i] == 'x':
             
-            # Start coefficient and iterate through digits
+            # Start coefficient
             coeff = ''
             j = i - 1
-            while equ[j].isdigit() and j >= 0:
-                
-                # Create coefficient
-                coeff = equ[j] + coeff
-                j -= 1
             
-            # If no coefficient, set coeff to 1
-            if not equ[i - 1].isdigit():
+            # If just x, set coeff = 1. Else, iterate through 
+            if not equ[j].isdigit():
                 coeff = '1'  
+            
+            else:
+                while equ[j].isdigit() and j >= 0:
+                
+                    # Create coefficient
+                    coeff = equ[j] + coeff
+                    j -= 1
             
             # If negative, add negative to coefficient
             if equ[j] == '-' or equ[j-1] == '-':
                 coeff = '-' + coeff
                 
             # Add to total; if after the equal sign, add the negative value
-            print(coeff)
             total_coeff += int(coeff) if i > equ.index('=') else -1*int(coeff)
     
     # Return the total coefficient]
     return total_coeff
          
-####################################
-# Get total coefficient of numbers #
-#################################### 
+#################################
+# Get total coefficient of nums #
+# George Marche                 #
+# Modified: 10/20/2019          #
+# val_coeff()                   #
+# equ: string equation that     #
+#   consists of x-value and     #
+#   numerical coefficients      #
+#   formed into an equation     #
+#################################     
 def val_coeff(equ):
     
-    # Total coefficient variable
+    # Initiate total coefficient
     total_coeff = 0
     
     # Iterate through characters
@@ -77,7 +116,7 @@ def val_coeff(equ):
                     continue
                 
             # Start coefficient and iterate through digits
-            coeff = ""
+            coeff = ''
             j = i
             while equ[j].isdigit() and j >= 0:
                 
@@ -95,6 +134,12 @@ def val_coeff(equ):
     # Return the total coefficient
     return total_coeff
 
+#################################
+# MAIN SCRIPT                   #
+# George Marche                 #
+# Modified: 10/20/2019          #
+#################################
+
 # Get equation input, test for correctness  
 eq = is_equation(input("Enter an equation to solve: "))
 if eq == None:
@@ -103,7 +148,7 @@ if eq == None:
 else:
     
     # Get values
-    print("\n" + eq)
+    print("\nYour equation is " + eq)
     x_val = x_coeff(eq)
     num_val =   val_coeff(eq)
 
